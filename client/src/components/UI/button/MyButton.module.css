@@ -1,0 +1,14 @@
+.Btn {
+    padding: 5px 15px;
+    color: #C5B3DB;
+    font-size: 14px;
+    background: transparent;
+    border: 1px solid #956CAE;
+    cursor: pointer;
+}
+
+.Btn:hover {
+    background-color: #C5B3DB;
+    color: #171717;
+    transition: .3s;
+}
