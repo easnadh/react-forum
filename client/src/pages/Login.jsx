@@ -19,7 +19,7 @@ export default function LoginForm() {
       //   navigate("/");
       // };
     }
-    console.log(values);
+    console.log(values)
   };
 
 

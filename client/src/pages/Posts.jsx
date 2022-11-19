@@ -11,6 +11,7 @@ import PostFilter from "../components/PostFilter";
 import PostList from "../components/PostList";
 import Pagination from "../components/UI/pagination/Pagination";
 import Loader from "../components/UI/loader/Loader";
+import {Link} from "react-router-dom";
 
 function Posts() {
 
@@ -50,8 +51,10 @@ function Posts() {
     fetchPosts(limit, page)
   }
 
-  return (
+  return <>
       <div className="App">
+        <Link to="/login">Выйти</Link>
+        <br/>
         <MyButton style={{marginTop: 30}} onClick={() => setModal(true)}>
           Create post
         </MyButton>
@@ -72,9 +75,8 @@ function Posts() {
         }
 
         <Pagination page={page} changePage={changePage} totalPages={totalPages}/>
-
       </div>
-  );
+  </>
 }
 
 export default Posts;

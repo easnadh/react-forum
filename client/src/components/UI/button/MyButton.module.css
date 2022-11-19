@@ -8,7 +8,7 @@
 }
 
 .Btn:hover {
-    background-color: #C5B3DB;
-    color: #171717;
+    background-color: #282828;
+    /*color: #171717;*/
     transition: .3s;
 }

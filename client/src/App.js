@@ -7,6 +7,7 @@ import {
 import Posts from "./pages/Posts";
 import LoginForm from "./pages/Login";
 import Registration from "./pages/Registration";
+import PostPage from "./components/PostPage";
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
       <Route path='/login' element={<LoginForm />} />
       <Route path='/reg' element={<Registration />} />
       <Route path='/' element={<Posts />} />
+      <Route path='/:id' element={<PostPage />} />
     </Routes>
   </>
 
