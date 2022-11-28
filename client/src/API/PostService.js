@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const URL = 'https://jsonplaceholder.typicode.com/posts/'
+export const BASE_URL = 'http://127.0.0.1:3001'
 
 export default class PostService {
 

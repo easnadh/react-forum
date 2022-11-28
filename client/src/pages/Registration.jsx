@@ -5,6 +5,7 @@ import {Link} from "react-router-dom"
 import styles from '../styles/Error.module.css'
 import MyInput from "../components/UI/input/MyInput"
 import MyButton from "../components/UI/button/MyButton"
+import {BASE_URL} from "../API/PostService";
 
 
 const isValid = (values) => {
@@ -32,9 +33,19 @@ const isValid = (values) => {
 
 export default function Registration() {
 
-  const onSubmit = (values) => {
+  const onSubmit = (data) => {
     // отправка данных на сервер
-    console.log(values);
+    const registrationRequest = async () => {
+      await fetch(`${BASE_URL}/reg`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+    }
+    registrationRequest()
+    console.log('fetch', data);
   };
 
   return <>
