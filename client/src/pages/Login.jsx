@@ -1,28 +1,47 @@
-import React from "react"
+import React, {useState} from "react"
 import {Form as FinalForm, Field} from 'react-final-form'
 import {Link, useNavigate} from "react-router-dom"
 import styles from '../styles/Error.module.css'
 import MyInput from "../components/UI/input/MyInput"
 import MyButton from "../components/UI/button/MyButton"
+import {BASE_URL} from "../API/PostService";
 
 
 const required = (value) => (value ? undefined : "Это поле не может быть пустым")
 
 export default function LoginForm() {
   const navigate = useNavigate();
-  const onSubmit = (values) => {
-    // отправка данных на сервер
-    if(values.login === "admin" && values.password === "123") {
-      navigate("/");
-      // const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-      //   e.preventDefault();
-      //   navigate("/");
-      // };
+  const [result, setResult] = useState("")
+  const [error, setError] = useState("")
+  const onSubmit = (data) => {
+    const authRequest = async () => {
+      setResult("")
+      setError("")
+      try {
+        const response = await fetch(`${BASE_URL}/auth`, {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        })
+        if (response.status !== 200) {
+          const responseData = await response.json()
+          throw Error(responseData.message)
+        }
+        setResult("'пользователь вошел', - подумал штирлиц")
+        setTimeout(() => {
+           navigate("/")
+        }, 1000)
+      } catch (e) {
+        if(e instanceof Error) {
+          setError(e.message)
+        }
+      }
     }
-    console.log(values)
+    authRequest()
   };
-
-
 
   return <>
     <FinalForm
@@ -50,6 +69,8 @@ export default function LoginForm() {
             </form>
         )}>
     </FinalForm>
+    {result && <>{result}</>}
+    {error && <>{error}</>}
     <Link to="/reg">Зарегистрироваться</Link>
   </>;
 }

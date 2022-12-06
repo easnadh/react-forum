@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {useState} from "react";
 import {usePosts} from "../hooks/usePosts";
 import {useFetching} from "../hooks/useFetching";
-import PostService from "../API/PostService";
+import PostService, {BASE_URL} from "../API/PostService";
 import {getPageCount} from "../utils/pages";
 import MyButton from "../components/UI/button/MyButton";
 import MyModal from "../components/UI/modal/MyModal";
@@ -15,6 +15,34 @@ import {Link} from "react-router-dom";
 
 function Posts() {
 
+  // получение авторизации
+  const [result, setResult] = useState("")
+  const [error, setError] = useState("")
+  useEffect(() =>{
+    const userRequest = async () => {
+      setResult("")
+      setError("")
+      try {
+        const response = await fetch(`${BASE_URL}/auth`, {
+          credentials: "include",
+          method: "GET"
+        })
+        if (response.status !== 200) {
+          const responseData = await response.json()
+          throw Error(responseData.message)
+        }
+        const user = await response.json()
+        setResult(`welcome home, ${user.login}`)
+      } catch (e) {
+        if(e instanceof Error) {
+          setError(e.message)
+        }
+      }
+    }
+    userRequest()
+  })
+
+  // загрузка постов
   const [posts, setPosts] = useState([]);
   const [filter, setFilter] = useState({sort: '', query: ''})
   const [modal, setModal] = useState(false)
@@ -52,6 +80,8 @@ function Posts() {
   }
 
   return <>
+    {result && <>{result}</>}
+    {error && <>{error}</>}
       <div className="App">
         <Link to="/login">Выйти</Link>
         <br/>

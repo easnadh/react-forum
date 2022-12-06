@@ -1,7 +1,7 @@
-import React from "react"
+import React, {useState} from "react"
 import {Form as FinalForm, Field} from 'react-final-form'
 import {isValidLogin, isValidPassword} from "../utils/validators"
-import {Link} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
 import styles from '../styles/Error.module.css'
 import MyInput from "../components/UI/input/MyInput"
 import MyButton from "../components/UI/button/MyButton"
@@ -32,20 +32,37 @@ const isValid = (values) => {
 };
 
 export default function Registration() {
-
+  const navigate = useNavigate();
+  const [result, setResult] = useState("")
+  const [error, setError] = useState("")
   const onSubmit = (data) => {
     // отправка данных на сервер
     const registrationRequest = async () => {
-      await fetch(`${BASE_URL}/reg`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-      })
+      setResult("")
+      setError("")
+      try {
+        const response = await fetch(`${BASE_URL}/reg`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        })
+        if (response.status !== 200) {
+          const responseData = await response.json()
+          throw Error(responseData.message)
+        }
+        setResult("пользователь создан")
+        setTimeout(() => {
+          navigate("/login")
+        }, 2000)
+      } catch (e) {
+        if(e instanceof Error) {
+          setError(e.message)
+        }
+      }
     }
     registrationRequest()
-    console.log('fetch', data);
   };
 
   return <>
@@ -83,6 +100,8 @@ export default function Registration() {
             </form>
         )}>
     </FinalForm>
+    {result && <>{result}</>}
+    {error && <>{error}</>}
     <Link to="/login">Войти</Link>
   </>;
 }
