@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {useState} from "react";
 import {usePosts} from "../hooks/usePosts";
 import {useFetching} from "../hooks/useFetching";
-import PostService, {BASE_URL} from "../API/PostService";
+import PostService, {API} from "../API/PostService";
 import {getPageCount} from "../utils/pages";
 import MyButton from "../components/UI/button/MyButton";
 import MyModal from "../components/UI/modal/MyModal";
@@ -18,21 +18,16 @@ function Posts() {
   // получение авторизации
   const [result, setResult] = useState("")
   const [error, setError] = useState("")
+  const [isLogged, setLogged] = useState(false);
   useEffect(() =>{
     const userRequest = async () => {
+      setLogged(false);
       setResult("")
       setError("")
       try {
-        const response = await fetch(`${BASE_URL}/auth`, {
-          credentials: "include",
-          method: "GET"
-        })
-        if (response.status !== 200) {
-          const responseData = await response.json()
-          throw Error(responseData.message)
-        }
-        const user = await response.json()
+        const user = await API.user.getCurrentUser();
         setResult(`welcome home, ${user.login}`)
+        setLogged(true);
       } catch (e) {
         if(e instanceof Error) {
           setError(e.message)
@@ -40,7 +35,7 @@ function Posts() {
       }
     }
     userRequest()
-  })
+  },[])
 
   // загрузка постов
   const [posts, setPosts] = useState([]);

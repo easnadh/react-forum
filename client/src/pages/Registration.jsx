@@ -5,8 +5,7 @@ import {Link, useNavigate} from "react-router-dom"
 import styles from '../styles/Error.module.css'
 import MyInput from "../components/UI/input/MyInput"
 import MyButton from "../components/UI/button/MyButton"
-import {BASE_URL} from "../API/PostService";
-
+import {API} from "../API/PostService";
 
 const isValid = (values) => {
   const errors = {}
@@ -41,17 +40,7 @@ export default function Registration() {
       setResult("")
       setError("")
       try {
-        const response = await fetch(`${BASE_URL}/reg`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(data)
-        })
-        if (response.status !== 200) {
-          const responseData = await response.json()
-          throw Error(responseData.message)
-        }
+        await API.user.register(data);
         setResult("пользователь создан")
         setTimeout(() => {
           navigate("/login")

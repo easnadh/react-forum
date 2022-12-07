@@ -4,8 +4,7 @@ import {Link, useNavigate} from "react-router-dom"
 import styles from '../styles/Error.module.css'
 import MyInput from "../components/UI/input/MyInput"
 import MyButton from "../components/UI/button/MyButton"
-import {BASE_URL} from "../API/PostService";
-
+import {API} from "../API/PostService";
 
 const required = (value) => (value ? undefined : "Это поле не может быть пустым")
 
@@ -18,18 +17,7 @@ export default function LoginForm() {
       setResult("")
       setError("")
       try {
-        const response = await fetch(`${BASE_URL}/auth`, {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(data)
-        })
-        if (response.status !== 200) {
-          const responseData = await response.json()
-          throw Error(responseData.message)
-        }
+        await API.auth.login(data);
         setResult("'пользователь вошел', - подумал штирлиц")
         setTimeout(() => {
            navigate("/")
