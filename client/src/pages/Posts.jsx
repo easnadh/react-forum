@@ -11,7 +11,6 @@ import PostFilter from "../components/PostFilter";
 import PostList from "../components/PostList";
 import Pagination from "../components/UI/pagination/Pagination";
 import Loader from "../components/UI/loader/Loader";
-import {Link} from "react-router-dom";
 
 function Posts() {
 
@@ -74,11 +73,26 @@ function Posts() {
     fetchPosts(limit, page)
   }
 
+  const handleLogout = () => {
+    const logoutRequest = async () => {
+      try {
+        await API.auth.logout();
+        setLogged(false);
+        setResult("");
+      } catch (e) {
+        if (e instanceof Error) {
+          setError(e.message);
+        }
+      }
+    }
+    logoutRequest()
+  }
+
   return <>
     {result && <>{result}</>}
     {error && <>{error}</>}
+    {isLogged && <MyButton onClick={handleLogout}>Выйти</MyButton>}
       <div className="App">
-        <Link to="/login">Выйти</Link>
         <br/>
         <MyButton style={{marginTop: 30}} onClick={() => setModal(true)}>
           Create post
@@ -101,7 +115,7 @@ function Posts() {
 
         <Pagination page={page} changePage={changePage} totalPages={totalPages}/>
       </div>
-  </>
+    </>
 }
 
 export default Posts;
