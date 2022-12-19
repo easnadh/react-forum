@@ -72,4 +72,17 @@ export const API = {
       return await response.json();
     },
   },
+  post: {
+    createCurrentPost: async (data) => {
+      const response = await fetch(`${BASE_URL}/topic`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+      await errorHandler(response);
+    },
+  },
 };

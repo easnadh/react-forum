@@ -11,17 +11,12 @@ const PostForm = ({create}) => {
   const newDate = new Date()
   const date = String(newDate.getDate()).padStart(2, '0') + '.' + String(newDate.getMonth() + 1)
       .padStart(2, '0') + '.' + newDate.getFullYear()
+/*
   const [post, setPost] = useState({title: '', body: '', date: date})
+*/
 
-  const addNewPost = (e) => {
-    e.preventDefault()
-    const newPost = {
-      ...post, id: Date.now()
-    }
-    if(newPost.title !== '' && newPost.body !== '') {
-      create(newPost)
-    }
-    setPost({title: '', body: '', date: date})
+  const addNewPost = (newPost) => {
+    create(newPost)
   }
 
   return <>
@@ -35,8 +30,6 @@ const PostForm = ({create}) => {
                     <div>
                       <MyInput
                           type="text" {...input}
-                          value={post.title}
-                          onChange={e => setPost({...post, title: e.target.value})}
                           placeholder="title"
                       />
                       {meta.touched && meta.error && <div className={styles.error}>{meta.error}</div>}
@@ -48,15 +41,13 @@ const PostForm = ({create}) => {
                     <div>
                       <MyInput
                           type="text" {...input}
-                          value={post.body}
-                          onChange={e => setPost({...post, body: e.target.value})}
                           placeholder="description"
                       />
                       {meta.touched && meta.error && <div className={styles.error}>{meta.error}</div>}
                     </div>
                 )}
               </Field>
-              <MyButton onClick={addNewPost}>Create</MyButton>
+              <MyButton type="submit">Create</MyButton>
             </form>
         )}>
     </FinalForm>

@@ -59,9 +59,17 @@ function Posts() {
   }, [])
 
 
-  const createPost = (newPost) => {
+  const createPost = async (newPost) => {
     setPosts([...posts, newPost])
     setModal(false)
+    try {
+      await API.post.createCurrentPost(newPost);
+      console.log("пост создан")
+    } catch (e) {
+      if(e instanceof Error) {
+        setError(e.message)
+      }
+    }
   }
 
   const removePost = (post) => {

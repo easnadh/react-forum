@@ -1,6 +1,4 @@
 const express = require('express');
-const {getUserIdByToken} = require("../db/tokens");
-const {getUserById} = require("../db/users");
 const {getAllTopics, createTopic, getTopicById} = require("../db/topics");
 const {checkAuth} = require("../models/user");
 const {NotFoundError} = require("../errors");
@@ -39,8 +37,7 @@ topicRouter.post("/", async (req, res, next) => {
   try {
     const token = req.cookies.token;
     const userId = await checkAuth(token);
-
-    const newTopic = await createTopic(req.body.theme, userId);
+    const newTopic = await createTopic(req.body.title, userId);
     res.status(200).json(newTopic);
   } catch (err) {
     next(err);

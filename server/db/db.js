@@ -29,7 +29,7 @@ const initDb = async () => {
       CREATE TABLE IF NOT EXISTS topics
       (
           id        INTEGER PRIMARY KEY AUTOINCREMENT,
-          theme     TEXT    NOT NULL,
+          title     TEXT    NOT NULL,
           authorId  INTEGER NOT NULL,
           createdAt INTEGER NOT NULL,
           FOREIGN KEY (authorId) REFERENCES users (id)

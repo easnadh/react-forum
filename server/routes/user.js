@@ -1,5 +1,4 @@
 const express = require('express');
-const {getUserIdByToken} = require("../db/tokens");
 const {getUserByLogin, addUser, getUserById} = require("../db/users");
 const {checkAuth} = require("../models/user");
 const {BadRequestError} = require("../errors");
@@ -8,7 +7,7 @@ const userRouter = express.Router();
 userRouter.get("/", async (req, res, next) => {
   try {
     const token = req.cookies.token;
-    await checkAuth(token);
+    const userId = await checkAuth(token);
 
     const user = await getUserById(userId);
     res.status(200).json(user);

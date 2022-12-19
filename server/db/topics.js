@@ -9,15 +9,15 @@ module.exports = {
   getTopicById: async (id) => {
     return getDb().get(`SELECT * FROM ${TABLE_NAME} WHERE id = ?`, id);
   },
-  createTopic: async (theme, userId) => {
+  createTopic: async (title, userId) => {
     const newTopic = {
-      theme,
+      title,
       userId,
       createdAt: new Date().getTime()
     };
     const result = await getDb().run(
-        `INSERT INTO ${TABLE_NAME} (theme, authorId, createdAt) VALUES (?, ?, ?)`,
-        newTopic.theme, newTopic.userId, newTopic.createdAt
+        `INSERT INTO ${TABLE_NAME} (title, authorId, createdAt) VALUES (?, ?, ?)`,
+        newTopic.title, newTopic.userId, newTopic.createdAt
     );
     newTopic.id = result.lastID;
     return newTopic;
